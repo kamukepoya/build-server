@@ -27,6 +27,5 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-        if: always()
         with:
           status: ${{ job.status }} #
