@@ -24,9 +24,9 @@ CLANG_ROOTDIR=$(pwd)/dtc
 KERNELNAME:[Whatever+1.5][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
 export KBUILD_BUILD_HOST=Github@Workflows
-IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
-DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+IMAGE=out/arch/arm64/boot/Image.gz
+DTBO=out/arch/arm64/boot/dtbo.img
+DTB=out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 PATH="$(pwd)/dtc/bin:$(pwd)/gcc64/bin:$(pwd)/gcc32/bin:${PATH}"
@@ -64,7 +64,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
        exit 1
    fi
-      cd $(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+      cd out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
       cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
@@ -80,7 +80,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9</b> | <b>DragonTC</b>"
+        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9</b> | <b>DragonTC Clang</b>"
 }
 # Fin Error
 function finerr() {
