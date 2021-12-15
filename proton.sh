@@ -3,7 +3,7 @@
 #
 
 # Environment
-GIT_USERNAME=
+GIT_USERNAME=kamukepoya
 GIT_TOKEN=
 TG_CHAT_ID=
 TG_TOKEN=
@@ -17,14 +17,13 @@ function kernel(){
 
 # Clone ZyC_clang
 function zyc(){
-  rm -rf ZyC-Clang*
-  mkdir $HOME/buildkernel/zyc_clang
-  wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"
-  tar -xvf ZyC-Clang-14.tar.gz -C $HOME/buildkernel/zyc_clang
+  rm -rf prutun*
+  git clone --depth=1 https://github.com/HANA-CI-Build-Project/proton-clang -b proton-clang-11 prutun
 }
 
 # Main 
 KERNEL_ROOTDIR=$HOME/buildkernel/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
+CLANG_ROOTDIR=$HOME/buildkernel/prutun
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 export KBUILD_BUILD_HOST=serbermurah # Change with your own hostname.
 IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
@@ -32,7 +31,7 @@ DTBO=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dtbo.img
 DTB=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
-PATH=$HOME/buildkernel/zyc_clang:${PATH}
+PATH=$HOME/buildkernel/prutun:${PATH}
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -45,6 +44,8 @@ tg_post_msg() {
 }
 
 # Compile kernel
+tg_post_msg "<b>Compiled has started</b>"
+tg_post_msg "<b>Builder Name :</b> <code>${KBUILD_BUILD_USER}</code>%0A<b>Builder Host :</b> <code>${KBUILD_BUILD_HOST}</code>%0A<b>Clang Version :</b> <code>Proton clang 11</code>%0A<b>Clang Rootdir :</b> <code>${CLANG_ROOTDIR}</code>%0A<b>Kernel Rootdir :</b> <code>${KERNEL_ROOTDIR}</code>"
 function compile(){
 cd $HOME/buildkernel/mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
@@ -74,7 +75,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlinx</b> | <b>Use ZyC-Clang 14</b>"
+        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlinx</b> | <b>Use Proton clang 11</b>"
 }
 # Fin Error
 function finerr() {
@@ -88,7 +89,7 @@ function finerr() {
 # Zipping kernel
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-[$DATE].zip *
+    zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
 }
 clear
