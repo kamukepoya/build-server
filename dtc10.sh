@@ -9,27 +9,27 @@ TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 GIT_USERNAME=kamukepoya
 
 # Kernel Sources
-     rm -rf $HOME/buildkernel/mt6768
-     git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel $HOME/buildkernel/mt6768
-     rm -rf $HOME/buildkernel/dtc
-     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 $HOME/buildkernel/dtc
-     rm -rf $HOME/buildkernel/gcc64
-     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 $HOME/buildkernel/gcc64
-     rm -rf $HOME/buildkernel/gcc32
-     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 $HOME/buildkernel/gcc32
+     rm -rf $(pwd)/mt6768
+     git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel $(pwd)/mt6768
+     rm -rf $(pwd)/dtc
+     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 $(pwd)/dtc
+     rm -rf $(pwd)/gcc64
+     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 $(pwd)/gcc64
+     rm -rf $(pwd)/gcc32
+     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 $(pwd)/gcc32
 
 # Main Declaration
-KERNEL_ROOTDIR=$HOME/buildkernel/mt6768
-CLANG_ROOTDIR=$HOME/buildkernel/dtc
+KERNEL_ROOTDIR=$(pwd)/mt6768
+CLANG_ROOTDIR=$(pwd)/dtc
 KERNELNAME:[Whatever+1.5][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
-export KBUILD_BUILD_HOST=serbermurah
-IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
-DTBO=$HOME/buildkernel/mt6767/out/arch/arm64l/boot/dtbo.img
-DTB=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+export KBUILD_BUILD_HOST=Github@Workflows
+IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
+DTBO=$(pwd)/mt6767/out/arch/arm64/boot/dtbo.img
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
-PATH="$HOME/buildkernel/dtc/bin:$HOME/buildkernel/gcc64/bin:$HOME/buildkernel/gcc32/bin:${PATH}"
+PATH="$(pwd)/dtc/bin:$(pwd)/gcc64/bin:$(pwd)/gcc32/bin:${PATH}"
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -62,8 +62,9 @@ make -j$(nproc) ARCH=arm64 O=out \
 
    if ! [ -a "$IMAGE" ]; then
 	finerr
+       exit 1
    fi
-      cd $HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+      cd $(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
       cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
@@ -79,7 +80,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>DTC</b>"
+        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9</b> | <b>DragonTC</b>"
 }
 # Fin Error
 function finerr() {
@@ -88,6 +89,7 @@ function finerr() {
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
         -d text="Build throw an error(s)"
+      exit 1
 }
 
 # Zipping
