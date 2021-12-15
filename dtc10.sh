@@ -29,7 +29,7 @@ DTBO=out/arch/arm64/boot/dtbo.img
 DTB=out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
-PATH="dtc/bin:gcc64/bin:gcc32/bin:${PATH}"
+PATH="$(pwd)/dtc/bin:$(pwd)/gcc64/bin:$(pwd)/gcc32/bin:${PATH}"
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
