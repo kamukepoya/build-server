@@ -27,5 +27,3 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-        with:
-          status: ${{ job.status }} #
