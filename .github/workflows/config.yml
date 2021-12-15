@@ -1,4 +1,4 @@
-name: Lazy Kernel Builder
+name: Kernel Builder
 
 on:
   push:
@@ -22,13 +22,12 @@ jobs:
         run: |
           git config --global user.name "${GITHUB_USER}"
           git config --global user.email "${GITHUB_EMAIL}"
-          bash proton.sh
+          bash dtc10.sh
 
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-          TG_CHAT_ID: ${{ secrets.CHAT_ID }}
-      - uses: prof/notify-telegram@v0.1.0
+      - uses: yanzay/notify-telegram@v0.1.0
         if: always()
         with:
           status: ${{ job.status }} #
