@@ -25,7 +25,9 @@ function zyc(){
 
 # Main 
 KERNEL_ROOTDIR=$HOME/buildkernel/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
+CLANG_ROOTDIR=$HOME/buildkernel/zyc_clang
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
+KERNELNAME:[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_HOST=serbermurah # Change with your own hostname.
 IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
 DTBO=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dtbo.img
@@ -45,6 +47,8 @@ tg_post_msg() {
 }
 
 # Compile kernel
+tg_post_msg "<b>Compiled has started</b>"
+tg_post_msg "<b>Builder Name :</b> <code>${KBUILD_BUILD_USER}</code>%0A<b>Builder Host :</b> <code>${KBUILD_BUILD_HOST}</code>%0A<b>Clang Version :</b> <code>ZyC clang 14</code>%0A<b>Clang Rootdir :</b> <code>${CLANG_ROOTDIR}</code>%0A<b>Kernel Rootdir :</b> <code>${KERNEL_ROOTDIR}</code>"
 function compile(){
 cd $HOME/buildkernel/mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
@@ -88,7 +92,7 @@ function finerr() {
 # Zipping kernel
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-[$DATE].zip *
+    zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
 }
 clear
