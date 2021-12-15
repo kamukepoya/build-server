@@ -25,7 +25,7 @@ KERNELNAME:[Whatever+1.5][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
 export KBUILD_BUILD_HOST=Github@Workflows
 IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
-DTBO=$(pwd)/mt6767/out/arch/arm64/boot/dtbo.img
+DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
 DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
@@ -46,7 +46,7 @@ tg_post_msg() {
 tg_post_msg "<b>Compiled has started</b>"
 tg_post_msg "<b>Builder Name :</b> <code>${KBUILD_BUILD_USER}</code>%0A<b>Builder Host :</b> <code>${KBUILD_BUILD_HOST}</code>%0A<b>Clang Version :</b> <code>DragonTC 10</code>%0A<b>Clang Rootdir :</b> <code>${CLANG_ROOTDIR}</code>%0A<b>Kernel Rootdir :</b> <code>${KERNEL_ROOTDIR}</code>"
 compile(){
-cd $HOME/buildkernel/mt6768
+cd $(pwd)/mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=clang \
