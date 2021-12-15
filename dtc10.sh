@@ -9,18 +9,18 @@ TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 GIT_USERNAME=kamukepoya
 
 # Kernel Sources
-     rm -rf $(pwd)/mt6768
-     git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel $(pwd)/mt6768
-     rm -rf $(pwd)/dtc
-     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 $(pwd)/dtc
-     rm -rf $(pwd)/gcc64
-     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 $(pwd)/gcc64
-     rm -rf $(pwd)/gcc32
-     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 $(pwd)/gcc32
+     rm -rf mt6768
+     git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
+     rm -rf dtc
+     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 dtc
+     rm -rf gcc64
+     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 gcc64
+     rm -rf gcc32
+     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 gcc32
 
 # Main Declaration
-KERNEL_ROOTDIR=$(pwd)/mt6768
-CLANG_ROOTDIR=$(pwd)/dtc
+KERNEL_ROOTDIR=mt6768
+CLANG_ROOTDIR=dtc
 KERNELNAME:[Whatever][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
 export KBUILD_BUILD_HOST=Github@Workflows
@@ -29,7 +29,7 @@ DTBO=out/arch/arm64/boot/dtbo.img
 DTB=out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
-PATH="$(pwd)/dtc/bin:$(pwd)/gcc64/bin:$(pwd)/gcc32/bin:${PATH}"
+PATH="dtc/bin:gcc64/bin:gcc32/bin:${PATH}"
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
