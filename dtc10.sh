@@ -3,14 +3,14 @@
 #
 
 # Environment
-GIT_TOKEN=
-GIT_USERNAME=
-TG_CHAT_ID=
-TG_TOKEN=
+GIT_TOKEN=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
+TG_CHAT_ID=-1001594460781
+TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
+GIT_USERNAME=kamukepoya
 
 # Kernel Sources
      rm -rf $HOME/buildkernel/mt6768
-     git clone --depth=1 https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/kamukepoya/whatever_kernel -b test-kernel $HOME/buildkernel/mt6768
+     git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel $HOME/buildkernel/mt6768
      rm -rf $HOME/buildkernel/dtc
      git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 $HOME/buildkernel/dtc
      rm -rf $HOME/buildkernel/gcc64
