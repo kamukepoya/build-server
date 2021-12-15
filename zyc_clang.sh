@@ -25,7 +25,6 @@ function zyc(){
 
 # Main 
 KERNEL_ROOTDIR=$HOME/buildkernel/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
-KERNELNAME=[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 export KBUILD_BUILD_HOST=serbermurah # Change with your own hostname.
 IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
