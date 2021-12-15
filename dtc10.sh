@@ -1,26 +1,35 @@
-#!/usr/bin/env bash
 #
-# Copyright (C) 2021 a xyzprjkt property
+#  COMPILER KERNEL FOR SERVER
 #
 
-echo "Downloading few Dependecies . . ."
+# Environment
+GIT_TOKEN=
+GIT_USERNAME=
+TG_CHAT_ID=
+TG_TOKEN=
+
 # Kernel Sources
-     git clone --depth=1 $Kernel_source $Kernel_branch $Device_codename
-     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 clang
-     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 gcc
-     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 gcc32
+     rm -rf $HOME/buildkernel/mt6768
+     git clone --depth=1 https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/kamukepoya/whatever_kernel -b test-kernel $HOME/buildkernel/mt6768
+     rm -rf $HOME/buildkernel/dtc
+     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 $HOME/buildkernel/dtc
+     rm -rf $HOME/buildkernel/gcc64
+     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 $HOME/buildkernel/gcc64
+     rm -rf $HOME/buildkernel/gcc32
+     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 $HOME/buildkernel/gcc32
 
 # Main Declaration
-KERNEL_ROOTDIR=$(pwd)/merlin
-CLANG_ROOTDIR=$(pwd)/clang
+KERNEL_ROOTDIR=$HOME/buildkernel/mt6768
+CLANG_ROOTDIR=$HOME/buildkernel/dtc
+KERNELNAME:[Whatever+1.5][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
-export KBUILD_BUILD_HOST=CircleCItod
-CLANG_VER="$("$CLANG_ROOTDIR"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
-IMAGE=$(pwd)/merlin/out/arch/arm64/boot/Image.gz-dtb
+export KBUILD_BUILD_HOST=serbermurah
+IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
+DTBO=$HOME/buildkernel/mt6767/out/arch/arm64l/boot/dtbo.img
+DTB=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
-PATH="$(pwd)/clang/bin:$(pwd)/gcc/bin:$(pwd)/gcc32/bin:${PATH}"
+PATH="$HOME/buildkernel/dtc/bin:$HOME/buildkernel/gcc64/bin:$HOME/buildkernel/gcc32/bin:${PATH}"
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -34,9 +43,11 @@ tg_post_msg() {
 }
 
 # Compile
+tg_post_msg "<b>Compiled has started</b>"
+tg_post_msg "<b>Builder Name :</b> <code>${KBUILD_BUILD_USER}</code>%0A<b>Builder Host :</b> <code>${KBUILD_BUILD_HOST}</code>%0A<b>Clang Version :</b> <code>DragonTC 10</code>%0A<b>Clang Rootdir :</b> <code>${CLANG_ROOTDIR}</code>%0A<b>Kernel Rootdir :</b> <code>${KERNEL_ROOTDIR}</code>"
 compile(){
-cd ${KERNEL_ROOTDIR}
-make -j$(nproc) O=out ARCH=arm64 $Device_defconfig
+cd $HOME/buildkernel/mt6768
+make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=clang \
     AS=llvm-as \
@@ -51,10 +62,13 @@ make -j$(nproc) ARCH=arm64 O=out \
 
    if ! [ -a "$IMAGE" ]; then
 	finerr
-	exit 1
    fi
-  git clone --depth=1 $Anykernel AnyKernel
+      cd $HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+      cd -
+  git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
+        cp $DTBO AnyKernel
+        cp $DTB AnyKernel
 }
 
 # Push kernel to channel
@@ -74,7 +88,6 @@ function finerr() {
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
         -d text="Build throw an error(s)"
-    exit 1
 }
 
 # Zipping
