@@ -27,7 +27,6 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-      - uses: yanzay/notify-telegram@v0.1.0
         if: always()
         with:
           status: ${{ job.status }} #
