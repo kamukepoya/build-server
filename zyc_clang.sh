@@ -3,10 +3,10 @@
 #
 
 # Environment
-GIT_USERNAME=
-GIT_TOKEN=
-TG_CHAT_ID=
-TG_TOKEN=
+GIT_USERNAME=kamukepoya
+GIT_TOKEN=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
+TG_CHAT_ID=-1001594460781
+TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 
 # Clone kernel source
 function kernel(){
