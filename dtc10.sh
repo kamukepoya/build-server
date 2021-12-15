@@ -21,7 +21,7 @@ GIT_USERNAME=kamukepoya
 # Main Declaration
 KERNEL_ROOTDIR=mt6768
 CLANG_ROOTDIR=dtc
-KERNELNAME:[Whatever][DragonTC]
+export KERNELNAME=[Whatever][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
 export KBUILD_BUILD_HOST=Github@Workflows
 IMAGE=out/arch/arm64/boot/Image.gz
