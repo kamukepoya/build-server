@@ -32,7 +32,7 @@ DTBO=mt6768/out/arch/arm64/boot/dtbo.img
 DTB=mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
-PATH=prutun:${PATH}
+PATH="${PATH}:prutun/bin"
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
