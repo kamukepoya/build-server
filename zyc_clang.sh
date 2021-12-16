@@ -101,7 +101,7 @@ function zipping() {
 function success() {
 tg_post_msg "Build whatever kernel success, thankyou. By Itsprof@GithubWork"
 }
-Kernel
+kernel
 zyc
 compile
 zipping
