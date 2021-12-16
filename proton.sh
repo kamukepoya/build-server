@@ -1,12 +1,12 @@
-#
-# SCRIPT COMPILE FOR SERVER
-#
-
 # Environment
 GIT_USERNAME=kamukepoya
 GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
 TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
+
+
+
+
 
 # Clone kernel source
 function kernel(){
@@ -21,6 +21,10 @@ function proton(){
   git clone --depth=1 https://github.com/HANA-CI-Build-Project/proton-clang -b proton-clang-11 $(pwd)/proton
 }
 
+
+
+
+
 # Main 
 KERNEL_ROOTDIR=$(pwd)/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
 CLANG_ROOTDIR=$(pwd)/proton
@@ -29,10 +33,14 @@ export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
 IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
 DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/mt6768.dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
 PATH="${PATH}:$(pwd)/proton/bin"
+
+
+
+
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -43,6 +51,10 @@ tg_post_msg() {
   -d "parse_mode=html" \
   -d text="$1"
 }
+
+
+
+
 
 # Compile kernel
 tg_post_msg "<b>Compiled has started</b>"
@@ -60,13 +72,20 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
         exit 1
    fi
-  cd $(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
-  cd -
-  git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
-	cp $IMAGE AnyKernel
-        cp $DTBO AnyKernel
-        cp $DTB AnyKernel
+
+  git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel 
+
+cp $IMAGE AnyKernel
+                    cp $DTBO AnyKernel
+cp $DTB AnyKernel
+                    cd AnyKernel
+mv mt6768.dtb dtb
+                    cd -
 }
+
+
+
+
 
 # Push 
 function push() {
@@ -95,9 +114,10 @@ function zipping() {
     cd ..
 }
 
-function success() {
-tg_post_msg "Build kernel success from github@workflows, thankyou"
-}
+
+
+
+
 kernel
 proton
 compile
@@ -105,4 +125,4 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-success
+
