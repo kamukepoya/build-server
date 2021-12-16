@@ -97,7 +97,7 @@ function zipping() {
 
 function success() {
 tg_post_msg "Build kernel success from github@workflows, thankyou"
-
+}
 kernel
 proton
 compile
