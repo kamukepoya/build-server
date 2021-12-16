@@ -36,7 +36,7 @@ KERNELNAME=[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
 IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
 DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/mt6768.dtb
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
 PATH="${PATH}:$(pwd)/clang/bin"
@@ -75,11 +75,12 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
        exit 1
    fi
+        cd $(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+        cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
                cp $DTBO AnyKernel
    cp $DTB AnyKernel
-        mv mt6768.dtb dtb
 }
 
 
