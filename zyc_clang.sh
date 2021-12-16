@@ -17,10 +17,10 @@ function kernel(){
 
 # Clone ZyC_clang
 function zyc(){
-  rm -rf ZyC-Clang*
-  mkdir zyc_clang
+  rm -rf $(pwd)/ZyC-Clang*
+  mkdir $(pwd)/zyc_clang
   wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"
-  tar -xvf ZyC-Clang-14.tar.gz -C zyc_clang
+  tar -xvf ZyC-Clang-14.tar.gz -C $(pwd)/zyc_clang
 }
 
 # Main 
