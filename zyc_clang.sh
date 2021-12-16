@@ -12,7 +12,7 @@ TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 function kernel(){
   rm -rf mt6768
   mkdir mt6768
-  git clone --depth=1 https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
+  git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
 }
 
 # Clone ZyC_clang
@@ -101,7 +101,6 @@ function zipping() {
 function success() {
 tg_post_msg "Build whatever kernel success, thankyou. By Itsprof@GithubWork"
 }
-clear
 Kernel
 zyc
 compile
