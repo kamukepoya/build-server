@@ -9,14 +9,14 @@ GIT_USERNAME=kamukepoya
 
 
 # Kernel Sources
-     rm -rf mt6768
+     rm -rf $(pwd)/mt6768
      git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
-     rm -rf dtc
-     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 dtc
-     rm -rf gcc64
-     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 gcc64
-     rm -rf gcc32
-     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 gcc32
+     rm -rf $(pwd)/dtc
+     git clone --depth=1 https://github.com/NusantaraDevs/DragonTC -b daily/10.0 $(pwd)/dtc
+     rm -rf $(pwd)/gcc64
+     git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 $(pwd)/gcc64
+     rm -rf $(pwd)/gcc32
+     git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 $(pwd)/gcc32
 
 
 # -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
@@ -28,9 +28,9 @@ CLANG_ROOTDIR=dtc
 export KERNELNAME=[Whatever][DragonTC]
 export KBUILD_BUILD_USER=Itsprof
 export KBUILD_BUILD_HOST=Github@Workflows
-IMAGE=out/arch/arm64/boot/Image.gz
-DTBO=out/arch/arm64/boot/dtbo.img
-DTB=out/arch/arm64/boot/dts/mediatek/dtb
+IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
+DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/mt6768.dtb
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 PATH="$(pwd)/dtc/bin:$(pwd)/gcc64/bin:$(pwd)/gcc32/bin:${PATH}"
@@ -76,12 +76,14 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
        exit 1
    fi
-      cd out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
-      cd -
+ 
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
-	cp $IMAGE AnyKernel
+	                             cp $IMAGE AnyKernel
         cp $DTBO AnyKernel
-        cp $DTB AnyKernel
+                                     cp $DTB AnyKernel
+        cd AnyKernel
+                                     mv mt6768.dtb dtb
+        cd -
 }
 
 
@@ -119,13 +121,8 @@ function zipping() {
 
 # -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
 
-
-function success() {
-tg_post_msg "Build kernel success from github@workflows, thankyou"
-}
 compile
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-success
