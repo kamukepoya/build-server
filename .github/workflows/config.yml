@@ -1,3 +1,4 @@
+kernel() {
 name: Kernel Builder
 
 on:
@@ -27,14 +28,16 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
+}
 
-name: kernel-bulder2
+kernell() {
+name: kernel-bulderr
 
 on:
   push:
 
 jobs:
-  Build-whatever-kernel2:
+  Build-whatever-kernell:
       runs-on: ubuntu-20.04
       steps:
       - uses: actions/checkout@v2
@@ -57,4 +60,6 @@ jobs:
        env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-end
+}
+kernel
+kernell
