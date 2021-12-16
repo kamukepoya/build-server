@@ -10,31 +10,31 @@ TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 
 # Clone kernel source
 function kernel(){
-  rm -rf $HOME/buildkernel/mt6768
-  mkdir $HOME/buildkernel/mt6768
-  git clone --depth=1 https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/kamukepoya/whatever_kernel -b test-kernel $HOME/buildkernel/mt6768
+  rm -rf mt6768
+  mkdir mt6768
+  git clone --depth=1 https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
 }
 
 # Clone ZyC_clang
 function zyc(){
   rm -rf ZyC-Clang*
-  mkdir $HOME/buildkernel/zyc_clang
+  mkdir zyc_clang
   wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"
-  tar -xvf ZyC-Clang-14.tar.gz -C $HOME/buildkernel/zyc_clang
+  tar -xvf ZyC-Clang-14.tar.gz -C zyc_clang
 }
 
 # Main 
-KERNEL_ROOTDIR=$HOME/buildkernel/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
-CLANG_ROOTDIR=$HOME/buildkernel/zyc_clang
+KERNEL_ROOTDIR=mt6768 # IMPORTANT ! Fill with your kernel source root directory.
+CLANG_ROOTDIR=zyc_clang
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
-KERNELNAME:[Whatever+1.5][ZycClang]
-export KBUILD_BUILD_HOST=serbermurah # Change with your own hostname.
-IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
-DTBO=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+KERNELNAME=[Whatever+1.5][ZycClang]
+export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
+IMAGE=mt6768/out/arch/arm64/boot/Image.gz
+DTBO=mt6768/out/arch/arm64/boot/dtbo.img
+DTB=mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
-PATH=$HOME/buildkernel/zyc_clang:${PATH}
+PATH=zyc_clang:${PATH}
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -48,9 +48,8 @@ tg_post_msg() {
 
 # Compile kernel
 tg_post_msg "<b>Compiled has started</b>"
-tg_post_msg "<b>Builder Name :</b> <code>${KBUILD_BUILD_USER}</code>%0A<b>Builder Host :</b> <code>${KBUILD_BUILD_HOST}</code>%0A<b>Clang Version :</b> <code>ZyC clang 14</code>%0A<b>Clang Rootdir :</b> <code>${CLANG_ROOTDIR}</code>%0A<b>Kernel Rootdir :</b> <code>${KERNEL_ROOTDIR}</code>"
 function compile(){
-cd $HOME/buildkernel/mt6768
+cd mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=${CLANG_ROOTDIR}/bin/clang \
@@ -61,8 +60,9 @@ make -j$(nproc) ARCH=arm64 O=out \
 
    if ! [ -a "$IMAGE" ]; then
 	finerr
+       exit 1
    fi
-  cd $HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+  cd mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
   cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
@@ -87,6 +87,7 @@ function finerr() {
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
         -d text="Build throw an error(s)"
+        exit 1
 }
 
 # Zipping kernel
@@ -94,6 +95,11 @@ function zipping() {
     cd AnyKernel || exit 1
     zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
+}
+
+# Success
+function success() {
+tg_post_msg "Build whatever kernel success, thankyou. By Itsprof@GithubWork"
 }
 clear
 Kernel
@@ -103,3 +109,4 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
+success
