@@ -1,4 +1,3 @@
-kernel() {
 name: Kernel Builder
 
 on:
@@ -28,9 +27,8 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-}
 
-kernell() {
+
 name: kernel-bulderr
 
 on:
@@ -60,6 +58,3 @@ jobs:
        env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-}
-kernel
-kernell
