@@ -1,4 +1,4 @@
-name: Building New Kernel
+name: whatever kernel
 
 on: [push]
 
