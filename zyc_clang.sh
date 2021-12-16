@@ -14,7 +14,7 @@ LOG_DEBUG=1
 function kernel(){
   rm -rf $(pwd)/mt6768
   mkdir $(pwd)/mt6768
-  git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel $(pwd)/mt6768
+  git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b hmp-kernel $(pwd)/mt6768
 }
 
 # Clone ZyC_clang
