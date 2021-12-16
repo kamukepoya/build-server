@@ -22,7 +22,12 @@ jobs:
         run: |
           git config --global user.name "${GITHUB_USER}"
           git config --global user.email "${GITHUB_EMAIL}"
-          bash proton.sh
+          bash dtc10.sh
+      
+        env:
+          GITHUB_EMAIL: ${{ secrets.EMAIL }}
+          GITHUB_USER: ${{ secrets.USERNAME }}
+
 jobs:
   Build-whatever-kernel2:
       runs-on: ubuntu-20.04
