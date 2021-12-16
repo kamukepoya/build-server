@@ -45,7 +45,7 @@ tg_post_msg() {
 }
 
 # Compile kernel
-tg_post_msg "<b>Compiled has started</b>
+tg_post_msg "<b>Compiled has started</b>"
 function compile(){
 cd mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
@@ -76,7 +76,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute and $(($DIFF % 60)) second. | For <b>Redmi Note 9</b> | <b>Proton</b>"
+        -F caption="Build success"
 }
 
 # Fin Error
