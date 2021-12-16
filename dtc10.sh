@@ -99,8 +99,13 @@ function zipping() {
     zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
 }
+
+function success() {
+tg_post_msg "Build kernel success from github@workflows, thankyou"
+
 compile
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
+success
