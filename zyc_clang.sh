@@ -10,9 +10,9 @@ TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 
 # Clone kernel source
 function kernel(){
-  rm -rf mt6768
-  mkdir mt6768
-  git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
+  rm -rf $(pwd)/mt6768
+  mkdir $(pwd)/mt6768
+  git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel $(pwd)/mt6768
 }
 
 # Clone ZyC_clang
@@ -24,17 +24,17 @@ function zyc(){
 }
 
 # Main 
-KERNEL_ROOTDIR=mt6768 # IMPORTANT ! Fill with your kernel source root directory.
-CLANG_ROOTDIR=clang
+KERNEL_ROOTDIR=$(pwd)/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
+CLANG_ROOTDIR=$(pwd)/clang
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 KERNELNAME=[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
-IMAGE=mt6768/out/arch/arm64/boot/Image.gz
-DTBO=mt6768/out/arch/arm64/boot/dtbo.img
-DTB=mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
+DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
-PATH=${PATH}:${CLANG_ROOTDIR}/bin
+PATH="${PATH}:$(pwd)/clang/bin"
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
