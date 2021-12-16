@@ -27,6 +27,7 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
+end 
 
 jobs:
   Build-whatever-kernel2:
@@ -52,3 +53,4 @@ jobs:
        env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
+end
