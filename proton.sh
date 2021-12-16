@@ -17,13 +17,13 @@ function kernel(){
 
 # Clone proton
 function proton(){
-  rm -rf $(pwd)/prutun*
-  git clone --depth=1 https://github.com/HANA-CI-Build-Project/proton-clang -b proton-clang-11 $(pwd)/prutun
+  rm -rf $(pwd)/proton
+  git clone --depth=1 https://github.com/HANA-CI-Build-Project/proton-clang -b proton-clang-11 $(pwd)/proton
 }
 
 # Main 
 KERNEL_ROOTDIR=$(pwd)/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
-CLANG_ROOTDIR=$(pwd)/prutun
+CLANG_ROOTDIR=$(pwd)/proton
 KERNELNAME=[Whatever+1.5][Proton]
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
