@@ -4,34 +4,34 @@
 
 # Environment
 GIT_USERNAME=kamukepoya
-GIT_TOKEN=
-TG_CHAT_ID=
-TG_TOKEN=
+GIT_TOKEN=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
+TG_CHAT_ID=-1001594460781
+TG_TOKEN=y
 
 # Clone kernel source
 function kernel(){
-  rm -rf $HOME/buildkernel/mt6768
-  mkdir $HOME/buildkernel/mt6768
-  git clone --depth=1 https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/kamukepoya/whatever_kernel -b test-kernel $HOME/buildkernel/mt6768
+  rm -rf mt6768
+  mkdir mt6768
+  git clone --depth=1 https://github.com/kamukepoya/whatever_kernel -b test-kernel mt6768
 }
 
-# Clone ZyC_clang
-function zyc(){
+# Clone proton
+function proton(){
   rm -rf prutun*
   git clone --depth=1 https://github.com/HANA-CI-Build-Project/proton-clang -b proton-clang-11 prutun
 }
 
 # Main 
-KERNEL_ROOTDIR=$HOME/buildkernel/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
-CLANG_ROOTDIR=$HOME/buildkernel/prutun
+KERNEL_ROOTDIR=mt6768 # IMPORTANT ! Fill with your kernel source root directory.
+CLANG_ROOTDIR=prutun
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
-export KBUILD_BUILD_HOST=serbermurah # Change with your own hostname.
-IMAGE=$HOME/buildkernel/mt6768/out/arch/arm64/boot/Image.gz
-DTBO=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
+IMAGE=mt6768/out/arch/arm64/boot/Image.gz
+DTBO=mt6768/out/arch/arm64/boot/dtbo.img
+DTB=mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
-PATH=$HOME/buildkernel/prutun:${PATH}
+PATH=prutun:${PATH}
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -44,10 +44,9 @@ tg_post_msg() {
 }
 
 # Compile kernel
-tg_post_msg "<b>Compiled has started</b>"
-tg_post_msg "<b>Builder Name :</b> <code>${KBUILD_BUILD_USER}</code>%0A<b>Builder Host :</b> <code>${KBUILD_BUILD_HOST}</code>%0A<b>Clang Version :</b> <code>Proton clang 11</code>%0A<b>Clang Rootdir :</b> <code>${CLANG_ROOTDIR}</code>%0A<b>Kernel Rootdir :</b> <code>${KERNEL_ROOTDIR}</code>"
+tg_post_msg "<b>Compiled has started</b>
 function compile(){
-cd $HOME/buildkernel/mt6768
+cd mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=${CLANG_ROOTDIR}/bin/clang \
@@ -58,8 +57,9 @@ make -j$(nproc) ARCH=arm64 O=out \
 
    if ! [ -a "$IMAGE" ]; then
 	finerr
+        exit 1
    fi
-  cd $HOME/buildkernel/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+  mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
   cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
@@ -92,9 +92,8 @@ function zipping() {
     zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
 }
-clear
 Kernel
-zyc
+proton
 compile
 zipping
 END=$(date +"%s")
