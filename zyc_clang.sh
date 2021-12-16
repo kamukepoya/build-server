@@ -8,7 +8,6 @@ GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
 TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 LOG_DEBUG=1
-COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 
 
 # Clone kernel source
@@ -50,7 +49,7 @@ tg_post_msg() {
 }
 
 # Compile kernel
-tg_post_msg "<b>Compiled has started</b>"
+tg_post_msg "<code>Compiled has started</code>"
 function compile(){
 cd mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
@@ -65,7 +64,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
        exit 1
    fi
-  cd mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
+  cd $(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
   cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
@@ -78,7 +77,6 @@ function push() {
     cd AnyKernel
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-        MD5CHECK=$(md5sum "$ZIP" | cut -d' ' -f1)
 	SID="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
 	STICK="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
         -F chat_id="$TG_CHAT_ID" \
@@ -104,18 +102,6 @@ function zipping() {
     cd ..
 }
 
-# Md5sum
-function ya() {
-        MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
-
-        # Show the Checksum along with caption
-    curl --progress-bar -F document=@"$1" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-	-F chat_id="$TG_CHAT_ID"  \
-	-F "disable_web_page_preview=true" \
-	-F "parse_mode=html" \
-	-F caption="$2 | <b>MD5 Checksum : </b><code>$MD5CHECK</code>"
-}
-
 # Success
 function success() {
 tg_post_msg "✅Build kernel success from Github@Workflows, thankyou."
@@ -133,5 +119,5 @@ success
 
 if [ $LOG_DEBUG = "1" ]
 then
-	tg_post_build "build.log" "$TG_CHAT_ID" 
+	tg_post_msg "build.log" "$TG_CHAT_ID" 
 fi
