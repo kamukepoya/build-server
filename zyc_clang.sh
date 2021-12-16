@@ -78,8 +78,17 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlinx</b> | <b>Use ZyC-Clang 14</b>"
+        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlin</b> | <b>Use ZyC-Clang 14</b>"
 }
+# Progress
+function progress() {
+     curl --progress-bar -F document=@$ZIP "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+        -F chat_id="$TG_CHAT_ID"  \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="Progress file"
+}
+
 # Fin Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
@@ -97,10 +106,14 @@ function zipping() {
     cd ..
 }
 
+# Md5sum
+MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
+
 # Success
 function success() {
-tg_post_msg "Build whatever kernel success, thankyou. By Itsprof@GithubWork"
+tg_post_msg "✅Build kernel success from Github@Workflows, thankyou.  ${MD5CHECK}"
 }
+
 kernel
 zyc
 compile
@@ -108,4 +121,10 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
+progress
 success
+
+if [ $LOG_DEBUG = "1" ]
+then
+	tg_post_build "build.log" "$TG_CHAT_ID" 
+fi
