@@ -36,7 +36,7 @@ KERNELNAME=[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
 IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
 DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/mt6768.dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
 PATH="${PATH}:$(pwd)/clang/bin"
@@ -62,7 +62,7 @@ tg_post_msg() {
 # Compile kernel
 tg_post_msg "<code>Compiled has started</code>"
 function compile(){
-cd mt6768
+cd $(pwd)/mt6768
 make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=${CLANG_ROOTDIR}/bin/clang \
@@ -75,12 +75,11 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
        exit 1
    fi
-  cd $(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek && mv mt6768.dtb dtb
-  cd -
   git clone --depth=1 https://github.com/kamukepoya/AnyKernel-nih AnyKernel
 	cp $IMAGE AnyKernel
-        cp $DTBO AnyKernel
-        cp $DTB AnyKernel
+               cp $DTBO AnyKernel
+   cp $DTB AnyKernel
+        mv mt6768.dtb dtb
 }
 
 
@@ -92,12 +91,10 @@ function push() {
     cd AnyKernel
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-	SID="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
-	STICK="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlin</b> | <b>Use ZyC-Clang 14</b>"
+        -F caption="✅Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlin</b> | <b>Use ZyC-Clang 14</b>"
 }
 
 # Fin Error
@@ -120,12 +117,6 @@ function zipping() {
 
 # -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
 
-
-# Success
-function success() {
-tg_post_msg "✅Build kernel success from Github@Workflows, thankyou."
-}
-
 kernel
 zyc
 compile
@@ -133,14 +124,5 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-ya
-success
-
 
 # -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
-
-
-if [ $LOG_DEBUG = "1" ]
-then
-	tg_post_msg "build.log" "$TG_CHAT_ID" 
-fi
