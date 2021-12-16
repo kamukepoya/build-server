@@ -1,13 +1,12 @@
-#
-# SCRIPT COMPILE FOR SERVER
-#
-
 # Environment
 GIT_USERNAME=kamukepoya
 GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
 TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 LOG_DEBUG=1
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
 
 
 # Clone kernel source
@@ -25,6 +24,10 @@ function zyc(){
   tar -xvf ZyC-Clang-14.tar.gz -C $(pwd)/clang
 }
 
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
+
 # Main 
 KERNEL_ROOTDIR=$(pwd)/mt6768 # IMPORTANT ! Fill with your kernel source root directory.
 CLANG_ROOTDIR=$(pwd)/clang
@@ -38,6 +41,10 @@ DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
 PATH="${PATH}:$(pwd)/clang/bin"
 
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
+
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
 
@@ -47,6 +54,10 @@ tg_post_msg() {
   -d "parse_mode=html" \
   -d text="$1"
 }
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 # Compile kernel
 tg_post_msg "<code>Compiled has started</code>"
@@ -71,6 +82,10 @@ make -j$(nproc) ARCH=arm64 O=out \
         cp $DTBO AnyKernel
         cp $DTB AnyKernel
 }
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 # Push 
 function push() {
@@ -102,6 +117,10 @@ function zipping() {
     cd ..
 }
 
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
+
 # Success
 function success() {
 tg_post_msg "✅Build kernel success from Github@Workflows, thankyou."
@@ -116,6 +135,10 @@ DIFF=$(($END - $START))
 push
 ya
 success
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 if [ $LOG_DEBUG = "1" ]
 then
