@@ -94,7 +94,8 @@ function zipping() {
     zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
 }
-Kernel
+
+kernel
 proton
 compile
 zipping
