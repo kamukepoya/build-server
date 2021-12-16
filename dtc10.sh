@@ -1,12 +1,12 @@
-#
-#  COMPILER KERNEL FOR SERVER
-#
-
 # Environment
 GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
 TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 GIT_USERNAME=kamukepoya
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 # Kernel Sources
      rm -rf mt6768
@@ -17,6 +17,10 @@ GIT_USERNAME=kamukepoya
      git clone --depth=1 https://github.com/ZyCromerZ/aarch64-zyc-linux-gnu -b 10 gcc64
      rm -rf gcc32
      git clone --depth=1 https://github.com/ZyCromerZ/arm-zyc-linux-gnueabi -b 10 gcc32
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 # Main Declaration
 KERNEL_ROOTDIR=mt6768
@@ -31,6 +35,10 @@ DATE=$(date +"%F-%S")
 START=$(date +"%s")
 PATH="$(pwd)/dtc/bin:$(pwd)/gcc64/bin:$(pwd)/gcc32/bin:${PATH}"
 
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
+
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
 
@@ -41,6 +49,10 @@ tg_post_msg() {
   -d text="$1"
 
 }
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 # Compile
 tg_post_msg "<b>Compiled has started</b>"
@@ -72,6 +84,10 @@ make -j$(nproc) ARCH=arm64 O=out \
         cp $DTB AnyKernel
 }
 
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
+
 # Push kernel to channel
 function push() {
     cd AnyKernel
@@ -99,6 +115,10 @@ function zipping() {
     zip -r9 $KERNELNAME-$DATE.zip *
     cd ..
 }
+
+
+# -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
+
 
 function success() {
 tg_post_msg "Build kernel success from github@workflows, thankyou"
