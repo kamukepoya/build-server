@@ -76,7 +76,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Build success"
+        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9</b> | <b>Use Proton Clang</b>"
 }
 
 # Fin Error
@@ -95,6 +95,9 @@ function zipping() {
     cd ..
 }
 
+function success() {
+tg_post_msg "Build kernel success from github@workflows, thankyou"
+
 kernel
 proton
 compile
@@ -102,3 +105,4 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
+success
