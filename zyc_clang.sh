@@ -7,6 +7,9 @@ GIT_USERNAME=kamukepoya
 GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
 TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
+LOG_DEBUG=1
+COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
+
 
 # Clone kernel source
 function kernel(){
@@ -75,18 +78,13 @@ function push() {
     cd AnyKernel
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+        MD5CHECK=$(md5sum "$ZIP" | cut -d' ' -f1)
+	SID="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
+	STICK="CAACAgUAAx0CR6Ju_gADT2DeeHjHQGd-79qVNI8aVzDBT_6tAAK8AQACwvKhVfGO7Lbi7poiIAQ"
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
         -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlin</b> | <b>Use ZyC-Clang 14</b>"
-}
-# Progress
-function progress() {
-     curl --progress-bar -F document=@$ZIP "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-        -F chat_id="$TG_CHAT_ID"  \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="Progress file"
 }
 
 # Fin Error
@@ -107,11 +105,20 @@ function zipping() {
 }
 
 # Md5sum
-MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
+function ya() {
+        MD5CHECK=$(md5sum "$1" | cut -d' ' -f1)
+
+        # Show the Checksum along with caption
+    curl --progress-bar -F document=@"$1" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+	-F chat_id="$TG_CHAT_ID"  \
+	-F "disable_web_page_preview=true" \
+	-F "parse_mode=html" \
+	-F caption="$2 | <b>MD5 Checksum : </b><code>$MD5CHECK</code>"
+}
 
 # Success
 function success() {
-tg_post_msg "✅Build kernel success from Github@Workflows, thankyou.  ${MD5CHECK}"
+tg_post_msg "✅Build kernel success from Github@Workflows, thankyou."
 }
 
 kernel
@@ -121,7 +128,7 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-progress
+ya
 success
 
 if [ $LOG_DEBUG = "1" ]
