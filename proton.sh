@@ -24,6 +24,7 @@ function proton(){
 # Main 
 KERNEL_ROOTDIR=mt6768 # IMPORTANT ! Fill with your kernel source root directory.
 CLANG_ROOTDIR=prutun
+KERNELNAME=[Whatever+1.5][Proton]
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
 IMAGE=mt6768/out/arch/arm64/boot/Image.gz
