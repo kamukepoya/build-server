@@ -18,14 +18,14 @@ function kernel(){
 # Clone ZyC_clang
 function zyc(){
   rm -rf $(pwd)/ZyC-Clang*
-  mkdir $(pwd)/zyc_clang
+  mkdir $(pwd)/clang
   wget -q  $(curl https://raw.githubusercontent.com/ZyCromerZ/Clang/main/Clang-14-link.txt 2>/dev/null) -O "ZyC-Clang-14.tar.gz"
-  tar -xvf ZyC-Clang-14.tar.gz -C $(pwd)/zyc_clang
+  tar -xvf ZyC-Clang-14.tar.gz -C $(pwd)/clang
 }
 
 # Main 
 KERNEL_ROOTDIR=mt6768 # IMPORTANT ! Fill with your kernel source root directory.
-CLANG_ROOTDIR=zyc_clang
+CLANG_ROOTDIR=clang
 export KBUILD_BUILD_USER=Itsprof # Change with your own name or else.
 KERNELNAME=[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
@@ -34,7 +34,7 @@ DTBO=mt6768/out/arch/arm64/boot/dtbo.img
 DTB=mt6768/out/arch/arm64/boot/dts/mediatek/dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
-PATH=${PATH}:${CLANG_ROOTDIR}
+PATH=${PATH}:${CLANG_ROOTDIR}/bin
 
 # Tg export
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -54,7 +54,6 @@ make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=${CLANG_ROOTDIR}/bin/clang \
     AR=${CLANG_ROOTDIR}/bin/llvm.as \
-    LD=${CLANG_ROOTDIR}/bin/ld.lld \
     CROSS_COMPILE=${CLANG_ROOTDIR}/bin/aarch64-linux-gnu- \
     CROSS_COMPILE_ARM32=${CLANG_ROOTDIR}/bin/arm-linux-gnueabi-
 
