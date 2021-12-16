@@ -27,7 +27,11 @@ jobs:
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
           GITHUB_USER: ${{ secrets.USERNAME }}
-end 
+
+name: kernel-bulder2
+
+on:
+  push:
 
 jobs:
   Build-whatever-kernel2:
