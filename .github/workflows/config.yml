@@ -22,7 +22,7 @@ jobs:
         run: |
           git config --global user.name "${GITHUB_USER}"
           git config --global user.email "${GITHUB_EMAIL}"
-          bash dtc10.sh
+          bash zyc_clang.sh
 
         env:
           GITHUB_EMAIL: ${{ secrets.EMAIL }}
