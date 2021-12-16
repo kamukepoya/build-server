@@ -102,7 +102,7 @@ function zipping() {
 
 function success() {
 tg_post_msg "Build kernel success from github@workflows, thankyou"
-
+}
 compile
 zipping
 END=$(date +"%s")
