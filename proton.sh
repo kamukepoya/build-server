@@ -76,7 +76,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9</b> | <b>DragonTC Clang</b>"
+        -F caption="Compile took $(($DIFF / 60)) minute and $(($DIFF % 60)) second. | For <b>Redmi Note 9</b> | <b>Proton</b>"
 }
 
 # Fin Error
@@ -85,7 +85,7 @@ function finerr() {
         -d chat_id="$TG_CHAT_ID" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
-        -d text="Build throw an error(s)"
+        -d text="Build throw an error"
 }
 
 # Zipping kernel
