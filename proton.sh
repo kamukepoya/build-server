@@ -6,7 +6,7 @@
 GIT_USERNAME=kamukepoya
 GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
-TG_TOKEN=y
+TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
 
 # Clone kernel source
 function kernel(){
@@ -75,8 +75,9 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9 merlinx</b> | <b>Use Proton clang 11</b>"
+        -F caption="Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Redmi Note 9</b> | <b>DragonTC Clang</b>"
 }
+
 # Fin Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
