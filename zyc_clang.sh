@@ -50,9 +50,11 @@ tg_post_msg() {
 tg_post_msg "<b>Compiled has started</b>"
 function compile(){
 cd mt6768
-make -j$(nproc) O=out ARCH=arm64 ${DEVICE_DEFCONFIG}
+make -j$(nproc) O=out ARCH=arm64 merlin_defconfig
 make -j$(nproc) ARCH=arm64 O=out \
     CC=${CLANG_ROOTDIR}/bin/clang \
+    AR=${CLANG_ROOTDIR}/bin/llvm.as \
+    LD=${CLANG_ROOTDIR}/bin/ld.lld \
     CROSS_COMPILE=${CLANG_ROOTDIR}/bin/aarch64-linux-gnu- \
     CROSS_COMPILE_ARM32=${CLANG_ROOTDIR}/bin/arm-linux-gnueabi-
 
