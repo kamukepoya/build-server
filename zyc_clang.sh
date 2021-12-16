@@ -3,7 +3,6 @@ GIT_USERNAME=kamukepoya
 GIT_TOKEN=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
 TG_CHAT_ID=-1001594460781
 TG_TOKEN=5033304308:AAFMZk06Th19PuhMKdigNNrhBn1Trkgjomg
-LOG_DEBUG=1
 
 
 # -------------------- # ---------------------- # -------------------------- # --------------------------- # -----------------#
@@ -36,7 +35,7 @@ KERNELNAME=[Whatever+1.5][ZycClang]
 export KBUILD_BUILD_HOST=Github-work # Change with your own hostname.
 IMAGE=$(pwd)/mt6768/out/arch/arm64/boot/Image.gz
 DTBO=$(pwd)/mt6768/out/arch/arm64/boot/dtbo.img
-DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/dtb
+DTB=$(pwd)/mt6768/out/arch/arm64/boot/dts/mediatek/mt6768.dtb
 DATE=$(date +"%F"-"%S")
 START=$(date +"%s")
 PATH="${PATH}:$(pwd)/clang/bin"
